@@ -12,6 +12,7 @@
     },
     "Vocabbulary" : [
         {
+          "id" : 0,
             "vocab" :"Academic publications",
             "meaning": "Các ấn phẩm học thuật"
         },

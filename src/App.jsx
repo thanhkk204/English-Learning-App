@@ -1,23 +1,18 @@
 import React, { useEffect, useRef, useState } from "react"
-import GetNewWord from "./Component/getNewWord"
 import "./Css/App.css"
-import axios from "axios"
+import Header from "./pages/Header"
+import "bootstrap/dist/css/bootstrap.min.css"
+import { Container } from "react-bootstrap"
+import { Outlet } from "react-router"
 function App() {
-  const [vocabulary , setVocabulary] = useState()
-  
-  useEffect(()=>{
-    const getVocab = async ()=>{
-      const res = await axios.get("http://localhost:3000/Vocabbulary")
-      setVocabulary(res.data)
-    }
-    getVocab()
-  },[])
-
   
   return (
-    <>
-     <GetNewWord vocabulary={vocabulary}/>
-    </>
+    <Container>
+      <Header />
+      <Container>
+        <Outlet />
+      </Container>
+    </Container>
   )
 }
 
