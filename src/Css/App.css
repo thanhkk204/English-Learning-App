@@ -75,6 +75,7 @@
   overflow-wrap: break-word;
   display: flex;
   align-items: center;
+  gap: 0.6rem;
   justify-content: space-between;
 }
 .simpleWord_wrap > svg {
@@ -82,6 +83,7 @@
   color: grey;
   cursor: pointer;
   transition: all 0.1s ease-in;
+  min-width: 2rem;
 }
 .simpleWord_wrap > svg:hover {
   color: #198754;
@@ -89,6 +91,7 @@
 .simpleWord {
   font-size: 1.5rem;
   color: grey;
+  max-width: -webkit-fill-available;
 }
 #getNewWordInput {
   margin-right: 0.9rem;
@@ -97,7 +100,7 @@
   padding: 0.3rem 0.6rem;
   border-bottom: 1px solid grey;
   background-color: transparent;
-  width: 250px;
+  width: 22ch;
   font-size: 1.2rem;
   color: grey;
 }
@@ -169,6 +172,8 @@ th {
 #ListWords td,
 th {
   border-bottom: 1px solid grey;
+  max-width: 150px;
+  overflow: hidden;
 }
 th:nth-child(5),
 td:nth-child(5) {
@@ -187,4 +192,15 @@ td:nth-child(5) {
   align-items: center;
   font-size: 1.4rem;
   color: grey;
+}
+#row_getWords {
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center !important;
+  gap: 2.5rem;
+}
+#timeForWords {
+  display: flex;
+  justify-content: space-between;
+  max-width: 400px;
 }
