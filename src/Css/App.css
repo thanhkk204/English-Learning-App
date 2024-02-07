@@ -71,24 +71,33 @@
   padding: 0.5rem 0.9rem;
 }
 .simpleWord_wrap {
-  width: 300px;
+  min-width: 300px;
+  max-width: 700px;
   overflow-wrap: break-word;
   display: flex;
   align-items: center;
   gap: 0.6rem;
   justify-content: space-between;
 }
-.simpleWord_wrap > svg {
-  font-size: 2rem;
+.simpleWord_wrap > div > svg {
+  font-size: 1.5rem;
   color: grey;
   cursor: pointer;
   transition: all 0.1s ease-in;
   min-width: 2rem;
 }
+#feature_wrap {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  gap: 0.3rem;
+}
+
 .simpleWord_wrap > svg:hover {
   color: #198754;
 }
 .simpleWord {
+  flex: 5;
   font-size: 1.5rem;
   color: grey;
   max-width: -webkit-fill-available;
@@ -203,4 +212,15 @@ td:nth-child(5) {
   display: flex;
   justify-content: space-between;
   max-width: 400px;
+}
+.voiceIcon {
+  font-size: 1.5rem;
+  color: grey;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+  min-width: 2rem;
+}
+.voiceIcon :hover {
+  color: #198754;
+  cursor: pointer;
 }

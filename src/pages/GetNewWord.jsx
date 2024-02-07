@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 import { BiTransfer } from "react-icons/bi"
 import DaysForWords from "../Component/daysForWords"
 import { restartVocab, validateString } from "../utilities/feature"
+import ReactSpeechKit from "../Component/ReactSpeechKit"
 export const loader = async () => {
   const data = await axios.get("http://localhost:3000/Vocabbulary")
   if (data) {
@@ -24,12 +25,18 @@ function GetNewWord() {
   const [simpleWord, setSimpleWord] = useState()
   const [userInput, setUserInput] = useState("")
   const [engLangue, setEngLangue] = useState(true)
+
   const inputRef = useRef()
   const nextWordRef = useRef()
-  const notify = () => toast("Hết từ rồi nha bé")
+  const toastifyOptional = {
+    theme: "dark",
+    draggable: true,
 
-  const notifyWrong = () => toast("Fail rồi nhập lại hoặc next đi!!~")
-  const notifyTranferation = (lang) => toast(`Bạn đã chuyển sang ${lang}`)
+  }
+  const notify = () => toast.success("Hết từ rồi nha bé" ,toastifyOptional)
+
+  const notifyWrong = () => toast.error("Fail rồi nhập lại hoặc next đi!!~" , toastifyOptional)
+  const notifyTranferation = (lang) => toast.warning(`Bạn đã chuyển sang ${lang}` , toastifyOptional)
 
   // Gắn sự kiện keydown cho 2 phím
   useEffect(() => {
@@ -49,8 +56,8 @@ function GetNewWord() {
   useEffect(() => {
     setSimpleWord(null)
     loader && setVocabularyProp(loader)
-    
   }, [loader])
+
   // Function thực thi khi ấn getNewWords
   function getNewVocab(e) {
     e.preventDefault()
@@ -75,14 +82,14 @@ function GetNewWord() {
       notify()
     }
   }
- 
   // Kiểm tra từ đungs hay sai
   function checkVob(e) {
     e.preventDefault()
+    const wordNeededToCheck = loader.find((item) => item.id == simpleWord.id)
     if (userInput !== "") {
       let wordForCheck = engLangue
-        ? loader[simpleWord["id"]].meaning
-        : loader[simpleWord["id"]].vocab
+        ? wordNeededToCheck.meaning
+        : wordNeededToCheck.vocab
       if (validateString(wordForCheck, userInput)) {
         filterWords()
         setUserInput("")
@@ -100,7 +107,15 @@ function GetNewWord() {
     engLangue == true ? (lang = "En") : (lang = "Vn")
     notifyTranferation(lang)
   }
-  
+  function handleOnchangeInput(e) {
+    e.preventDefault()
+    setUserInput(e.currentTarget.value)
+    e.currentTarget.value.length >= 22 &&
+      e.currentTarget.setAttribute(
+        "style",
+        `width: ${e.currentTarget.value.length}ch`
+      )
+  }
   return (
     <>
       {loader && (
@@ -121,7 +136,10 @@ function GetNewWord() {
                     <div className="simpleWord">
                       {engLangue ? simpleWord.vocab : simpleWord.meaning}
                     </div>
-                    <BiTransfer onClick={() => langueTranfer()} />
+                    <div id="feature_wrap">
+                      <ReactSpeechKit text={simpleWord.vocab} />
+                      <BiTransfer onClick={() => langueTranfer()} />
+                    </div>
                   </div>
                 ) : (
                   <div className="simpleWord">Keep yourself clean!!!</div>
@@ -135,17 +153,9 @@ function GetNewWord() {
                     required="required"
                     placeholder="Enter your answer"
                     ref={inputRef}
-                    onChange={(e) => {
-                      e.preventDefault()
-                      setUserInput(e.currentTarget.value)
-                      e.currentTarget.value.length >= 22 &&
-                        e.currentTarget.setAttribute(
-                          "style",
-                          `width: ${e.currentTarget.value.length}ch`
-                        )
-                    }}
                     value={userInput}
                     id="getNewWordInput"
+                    onChange={handleOnchangeInput}
                   />
                   <button
                     onClick={checkVob}

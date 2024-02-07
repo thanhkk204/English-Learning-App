@@ -1,5 +1,5 @@
 import axios from "axios"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import {
   Button,
   Col,
@@ -23,7 +23,24 @@ export default function ListWords() {
   const [totalPages, setTotalPages] = useState(Math.ceil(listWords.length / 7))
   const [maximumPages, setMaximumPages] = useState(2)
   const [minimumPages, setMinimumPages] = useState(0)
+  const rightSide = useRef()
+  const leftSide = useRef()
+   
   // const [togglePanigation, setTogglePanigation] = useState(false)
+  
+  useEffect(() => {
+    function handleKeydonwn(e) {
+      if (e.keyCode === 37 && leftSide.current) {
+        pageNumber > 0 && setPageNumber(pageNumber - 1)
+      }
+      if (e.keyCode === 39 && rightSide.current) {
+        pageNumber < totalPages - 1 && setPageNumber(pageNumber + 1)
+      }
+    }
+    window.addEventListener("keydown", handleKeydonwn)
+    return () => window.removeEventListener("keydown", handleKeydonwn)
+  })
+
   useEffect(() => {
     const startIndex = 7 * pageNumber - 1
     const endIndex = startIndex + 7
@@ -38,7 +55,6 @@ export default function ListWords() {
       setMinimumPages(pageNumber - 2)
     }
   }, [pageNumber])
-  console.log(maximumPages)
   function getMorePages(e) {
     setMaximumPages(maximumPages + 2)
     setMinimumPages(minimumPages + 2)
@@ -85,6 +101,7 @@ export default function ListWords() {
               }}
             />
             <Pagination.Prev
+              ref={leftSide}
               onClick={(e) => {
                 pageNumber > 0 && setPageNumber(pageNumber - 1)
               }}
@@ -117,6 +134,7 @@ export default function ListWords() {
             </Pagination.Item>
 
             <Pagination.Next
+            ref={rightSide}
               onClick={(e) => {
                 pageNumber < totalPages - 1 && setPageNumber(pageNumber + 1)
               }}
